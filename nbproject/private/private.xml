@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/docker/dev/laravel/resources/js/app.js</file>
+            <file>file:/D:/docker/dev/laravel/routes/web.php</file>
+            <file>file:/D:/docker/dev/laravel/resources/js/components/mapbox.vue</file>
+            <file>file:/D:/docker/dev/laravel/database/migrations/2020_06_13_134651_create_markers_table.php</file>
+            <file>file:/D:/docker/dev/laravel/resources/views/home.blade.php</file>
+            <file>file:/D:/docker/dev/laravel/database/migrations/2020_06_13_134622_create_lists_table.php</file>
+        </group>
+    </open-files>
+</project-private>
