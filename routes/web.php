@@ -24,4 +24,4 @@ Auth::routes();
 
 // Oauth
 Route::get('/auth/redirect/{provider}', 'SocialController@redirect');
-Route::get('/callback/{provider}', 'SocialController@callback');
+Route::get('/callback/{provider}', 'SocialController@callback')->name('SocialiteCallback');
