@@ -16,7 +16,7 @@ class CreateMarkersTable extends Migration
         Schema::create('markers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('list_id');
+            $table->unsignedBigInteger('listing_id');
             $table->decimal('lgt', 11, 8)->comment("longitude coord");
             $table->decimal('lat', 10, 8)->comment("latitude coord");
             $table->string('name', 100);
@@ -26,7 +26,7 @@ class CreateMarkersTable extends Migration
             $table->timestamp('updated_at', 0)->useCurrent();
             
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('list_id')->references('id')->on('lists');
+            $table->foreign('listing_id')->references('id')->on('listings');
         });
     }
 
