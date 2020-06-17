@@ -6,16 +6,11 @@ use Tests\TestCase;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Laravel\Socialite\Facades\Socialite;
-use \Mockery;
 
 class AuthTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
-    
-    /**
-    * @test
-    */    
+       
     public function test_user_can_view_a_login_form()
     {
         $response = $this->get('/login');
@@ -24,10 +19,7 @@ class AuthTest extends TestCase
         $response->assertViewIs('auth.login');
     }
     
-    /**
-    * @test
-    */
-    function testUserCanAuthenticate()
+    public function testUserCanAuthenticate()
     {
         $user = factory(User::class)->create();
 
