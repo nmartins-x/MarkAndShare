@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 class AuthTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use WithFaker;
        
     public function test_user_can_view_a_login_form()
     {
@@ -21,9 +21,7 @@ class AuthTest extends TestCase
     
     public function testUserCanAuthenticate()
     {
-        $user = factory(User::class)->create();
-
-        $this->actingAs($user);
+        $user = $this->act_as_auth_user();
 
         $this->assertAuthenticatedAs($user);
     }

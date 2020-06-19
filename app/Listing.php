@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Listing extends Model
 {
-    public function owner()
+    protected $fillable = [
+        'user_id', 'name', 'description', 'unique_url', 'public_listed'
+    ];
+        
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
