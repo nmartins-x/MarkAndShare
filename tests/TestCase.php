@@ -32,32 +32,75 @@ abstract class TestCase extends BaseTestCase
         $this->base_model= $model;
     }
     
+    /**
+     * Generic API POST with store action 
+     */
     protected function generic_create($attributes = [], $model = '', $route = '') {
-         $this->withoutExceptionHandling();
-         
-         $route = $this->base_route ? "{$this->base_route}.store" : $route;
-         $model = $this->base_model ?? $model;
-         
-         $attributes = raw($model, $attributes);
-         
-         if (! auth()->user()) {
-             $this->expectException(\Illuminate\Auth\AuthenticationException::class);
-         }
+        $this->withoutExceptionHandling();
 
-         $response = $this->postJson(route($route), $attributes)->assertSuccessful();
-         
-         $model = new $model;
-         
-         $this->assertDatabaseHas($model->getTable(), $attributes);
-         
-         return $response;
+        $route = $this->base_route ? "{$this->base_route}.store" : $route;
+        $model = $this->base_model ?? $model;
+
+        $attributes = raw($model, $attributes);
+
+        if (! auth()->user()) {
+            $this->expectException(\Illuminate\Auth\AuthenticationException::class);
+        }
+
+        $response = $this->postJson(route($route), $attributes)->assertSuccessful();
+
+        $model = new $model;
+
+        $this->assertDatabaseHas($model->getTable(), $attributes);
+
+        return $response;
     }
     
+     /**
+     * Generic API PATCH with update action 
+     */
     protected function generic_update($attributes = [], $model = '', $route = '') {
-        
+        $this->withoutExceptionHandling();
+         
+        $route = $this->base_route ? "{$this->base_route}.update" : $route;
+        $model = $this->base_model ?? $model;
+
+        $model = create($model, $attributes);
+
+        if (! auth()->user()) {
+            $this->expectException(\Illuminate\Auth\AuthenticationException::class);
+        }
+
+        $response = $this->patchJson(route($route, $model->id), $model->toArray());
+
+        tap($model->fresh(), function ($model) use ($attributes) {
+            collect($attributes)->each(function($value, $key) use ($model) {
+                $this->assertEquals($value, $model[$key]);
+            });
+        });
+
+        return $response;
     }
     
-    protected function generic_destroy($model = '', $route = '') {
-        
+     /**
+     * Generic API DELETE with destroy action 
+     */
+    protected function generic_destroy($attributes = [], $model = '', $route = '') {
+        $this->withoutExceptionHandling();
+
+        $route = $this->base_route ? "{$this->base_route}.destroy" : $route;
+        $model = $this->base_model ?? $model;
+
+        $model = create($model, $attributes);
+
+        if (! auth()->user()) {
+            $this->expectException(\Illuminate\Auth\AuthenticationException::class);
+        }
+
+        $response = $this->deleteJson(route($route, $model->id));
+
+        $this->assertDatabaseMissing($model->getTable(), $attributes);
+
+        return $response;
     }
 }

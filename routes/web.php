@@ -31,3 +31,5 @@ Route::middleware('auth')->group(function () {
         'except' => ['edit', 'show']
     ])->name('*', 'listing');
 });
+
+Route::get('/listing/show', 'ListingController@show')->name('listing.show');
