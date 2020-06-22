@@ -47,7 +47,10 @@ abstract class TestCase extends BaseTestCase
             $this->expectException(\Illuminate\Auth\AuthenticationException::class);
         }
 
-        $response = $this->postJson(route($route), $attributes)->assertSuccessful();
+        $response = $this->postJson(route($route), $attributes);
+        
+        $response->assertJson($attributes);
+        $response->assertSuccessful();
 
         $model = new $model;
 
@@ -98,6 +101,8 @@ abstract class TestCase extends BaseTestCase
         }
 
         $response = $this->deleteJson(route($route, $model->id));
+        
+        $response->assertJson([]);
 
         $this->assertDatabaseMissing($model->getTable(), $attributes);
 

@@ -28,6 +28,42 @@ class ListingTest extends TestCase {
         ];
     }
     
+     /**
+     * @test
+     */
+    public function auth_user_can_see_index_of_public_listings() {
+        create($this->base_model, $this->attributes);
+         
+        $response = $this->get(route($this->base_route . '.index'));
+        
+        $response->assertSuccessful();
+        
+        $this->assertNotEmpty($response->json());
+    }
+        
+    /**
+    * @test
+    */
+    public function auth_user_cannot_see_index_of_other_users_private_listings() {
+        $auth_user = $this->attributes['user_id'];
+       
+        $other_user = factory(User::class)->create();
+
+        $attributes = $this->attributes;
+        $attributes['user_id'] = $other_user->id;
+        $attributes['public_listed'] = 0;
+        
+        create($this->base_model, $attributes);
+        
+        $response = $this->get(
+                        route($this->base_route . '.index', $this->attributes)
+                )->assertSuccessful();
+        
+        $model = new $this->base_model;
+
+        $this->assertEmpty($response->json());
+    }
+    
     /**
     * @test
     */
@@ -35,7 +71,7 @@ class ListingTest extends TestCase {
         create($this->base_model, $this->attributes);
         
         $response = $this->get(
-                        route($this->base_route . '.show', $this->attributes)
+                        route($this->base_route . '.show', $this->attributes['unique_url'])
                 )->assertSuccessful();
 
         $model = new $this->base_model;
@@ -53,7 +89,7 @@ class ListingTest extends TestCase {
         create($this->base_model, $attributes);
         
         $response = $this->get(
-                        route($this->base_route . '.show', $this->attributes)
+                        route($this->base_route . '.show', $this->attributes['unique_url'])
                 )->assertSuccessful();
 
         $model = new $this->base_model;
@@ -64,7 +100,7 @@ class ListingTest extends TestCase {
     /**
     * @test
     */
-    public function auth_user_can_view_other_public_listing() {
+    public function auth_user_can_view_other_users_listings() {
         $auth_user = $this->attributes['user_id'];
        
         $other_user = factory(User::class)->create();
@@ -75,7 +111,7 @@ class ListingTest extends TestCase {
         create($this->base_model, $attributes);
         
         $response = $this->get(
-                        route($this->base_route . '.show', $this->attributes)
+                        route($this->base_route . '.show', $this->attributes['unique_url'])
                 )->assertSuccessful();
                 
         $model = new $this->base_model;
@@ -85,29 +121,6 @@ class ListingTest extends TestCase {
         if (! empty($response->json())) {
             $this->assertEquals($response->json()[0]['user_id'], $other_user->id);
         }
-    }
-    
-    /**
-    * @test
-    */
-    public function auth_user_cannot_view_other_user_private_listing() {
-        $auth_user = $this->attributes['user_id'];
-       
-        $other_user = factory(User::class)->create();
-
-        $attributes = $this->attributes;
-        $attributes['user_id'] = $other_user->id;
-        $attributes['public_listed'] = 0;
-        
-        create($this->base_model, $attributes);
-        
-        $response = $this->get(
-                        route($this->base_route . '.show', $this->attributes)
-                )->assertSuccessful();
-        
-        $model = new $this->base_model;
-
-        $this->assertEmpty($response->json());
     }
 
     /**
@@ -128,7 +141,7 @@ class ListingTest extends TestCase {
      * @test
      */
     public function auth_user_can_destroy_listing() {
-        $this->generic_destroy($this->attributes)->assertStatus(204);
+        $this->generic_destroy($this->attributes)->assertStatus(200);
     }
 
 }

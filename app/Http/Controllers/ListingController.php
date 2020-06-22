@@ -30,29 +30,13 @@ class ListingController {
         return response($response, 201);
     }
     
-    public function show(Request $request)
+    public function show(string $unique_url)
     {
-        $validator = Validator::make($request->all(), [
-            'unique_url' => 'required',
-        ]);
-        
-        if ($validator->fails()) {
-            return response('Error: unique_url is required', 400);
-        }
-               
-        $listing = Listing::where('unique_url', $request->unique_url)
-            ->where(function($query) {
-                $query->where('public_listed', 1);
-                
-                if ($user = Auth::User()) {
-                    $query->orwhere('user_id', $user->id);
-                }
-            }
-        );
+        $listing = Listing::where('unique_url', $unique_url);
 
         $response = $listing->get();
-  
-        return response($response, 201);
+
+        return response(json_encode($response), 201);
     }
 
     public function store(Request $request) {
@@ -96,9 +80,15 @@ class ListingController {
     
     public function destroy(Listing $listing)
     {
+        if(!$listing->id) {
+            return response('Error: id is required', 400);
+        }
+        
+        $this->user->listing()->findOrFail($listing->id);
+        
         $listing->delete();
         
-        return response([], 204);
+        return response()->json(['result' => 'deleted']);
     }
 
     /**

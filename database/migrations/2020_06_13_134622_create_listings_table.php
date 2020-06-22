@@ -18,7 +18,7 @@ class CreateListingsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('name', 100);
             $table->text('description');
-            $table->string('unique_url', 6)->unique();
+            $table->string('unique_url', 6)->unique()->collation('utf8_bin');
             $table->boolean('public_listed')->default(1);
             $table->timestamp('created_at', 0)->useCurrent();
             $table->timestamp('updated_at', 0)->useCurrent();
