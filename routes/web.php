@@ -26,10 +26,12 @@ Auth::routes();
 Route::get('/auth/redirect/{provider}', 'SocialController@redirect');
 Route::get('/callback/{provider}', 'SocialController@callback')->name('SocialiteCallback');
 
-Route::get('listing/{unique_url}', 'ListingController@show')->name('listing.show');
-
 Route::middleware('auth')->group(function () {
     Route::resource('/listing', 'ListingController', [
         'except' => ['edit', 'show']
     ])->name('*', 'listing');
+    
+    Route::get('/listing/user_owned/', 'ListingController@user_owned')->name('listing.user_owned');
 });
+
+Route::get('listing/{unique_url}', 'ListingController@show')->name('listing.show');

@@ -9,14 +9,7 @@ use Auth;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Validator;
 
-class ListingController {
-
-    protected $user;
-
-    public function __construct() {
-        $this->user = Auth::user();
-    }
-    
+class ListingController {    
     public function index()
     {
         $listing = Listing::where('public_listed', 1);
@@ -28,6 +21,15 @@ class ListingController {
         $response = $listing->get();
   
         return response($response, 201);
+    }
+    
+    public function user_owned()
+    {   
+        $user = Auth::User();
+                
+        $listings = $user->listing()->get();
+  
+        return response($listings, 201);
     }
     
     public function show(string $unique_url)
@@ -45,6 +47,8 @@ class ListingController {
             'description' => 'required|max:1000',
             'public_listed' => 'required|boolean'
         ]);
+        
+        $user = Auth::User();
 
         // Generate an unique random string of 6 characters
         do {
@@ -54,7 +58,7 @@ class ListingController {
         } while ($url_exists);
 
         $request->merge([
-            'user_id' => $this->user->id,
+            'user_id' => $user->id,
             'unique_url' => $unique_url
         ]);
 
@@ -68,8 +72,10 @@ class ListingController {
             'id' => 'required:numeric',
         ]);
         
+        $user = Auth::User();
+        
         // Validate that user owns the Listing
-        $this->user->listing()->findOrFail($request->id);
+        $user->listing()->findOrFail($request->id);
 
         $listing->update(
             $request->only('name', 'description', 'public_listed')
@@ -84,7 +90,9 @@ class ListingController {
             return response('Error: id is required', 400);
         }
         
-        $this->user->listing()->findOrFail($listing->id);
+        $user = Auth::User();
+        
+        $user->listing()->findOrFail($listing->id);
         
         $listing->delete();
         

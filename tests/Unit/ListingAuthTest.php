@@ -41,6 +41,24 @@ class ListingTest extends TestCase {
         $this->assertNotEmpty($response->json());
     }
         
+     /**
+     * @test
+     */
+    public function auth_user_can_see_all_own_listings() {
+        create($this->base_model, $this->attributes);
+        
+        $this->attributes['unique_url'] = 'BSdfgY';
+        $this->attributes['public_listed'] = 0;
+        create($this->base_model, $this->attributes);
+         
+        $response = $this->get(route($this->base_route . '.user_owned'));
+        
+        $response->assertSuccessful();
+        
+        $this->assertNotEmpty($response->json());
+        $this->assertEquals(count($response->json()), 2);
+    }
+        
     /**
     * @test
     */
