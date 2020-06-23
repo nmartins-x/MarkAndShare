@@ -36,7 +36,7 @@ class ListingController {
     {
         $listing = Listing::where('unique_url', $unique_url);
 
-        $response = $listing->get();
+        $response = $listing->first();
 
         return response(json_encode($response), 201);
     }
@@ -112,7 +112,7 @@ class ListingController {
 
         mt_srand((double) microtime() * 1000000);
 
-        while (strlen($activatecode) < $len + 1)
+        while (strlen($activatecode) < $len)
             $activatecode .= $base{mt_rand(0, $max)};
 
         return $activatecode;

@@ -5,18 +5,30 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
-//import ExampleComponent from "./components/ExampleComponent.vue";
+import Dashboard from './Dashboard.vue';
+import VueRouter from 'vue-router';
+import VueAxios from 'vue-axios';
 import VueMapbox from '@studiometa/vue-mapbox-gl';
+import axios from 'axios';
+import {routes} from './routes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 Vue.use(VueMapbox);
+Vue.use(VueRouter);
+Vue.use(VueAxios, axios);
 
 Vue.component('mapbox', require('./components/mapbox.vue').default);
+Vue.component('dashboard', require('./Dashboard.vue').default);
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: routes
+});
 
 const app = new Vue({
     el: '#app',
+    router: router,
 });
 

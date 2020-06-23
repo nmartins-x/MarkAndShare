@@ -94,7 +94,7 @@ class ListingTest extends TestCase {
 
         $model = new $this->base_model;
 
-        $this->assertEquals($response->json()[0]['user_id'], $this->attributes['user_id']);
+        $this->assertEquals($response->json()['user_id'], $this->attributes['user_id']);
     }
     
     /**
@@ -112,7 +112,7 @@ class ListingTest extends TestCase {
 
         $model = new $this->base_model;
 
-        $this->assertEquals($response->json()[0]['user_id'], $attributes['user_id']);
+        $this->assertEquals($response->json()['user_id'], $attributes['user_id']);
     }
     
     /**
@@ -137,7 +137,7 @@ class ListingTest extends TestCase {
         $this->assertNotEmpty($response->json());
                 
         if (! empty($response->json())) {
-            $this->assertEquals($response->json()[0]['user_id'], $other_user->id);
+            $this->assertEquals($response->json()['user_id'], $other_user->id);
         }
     }
 

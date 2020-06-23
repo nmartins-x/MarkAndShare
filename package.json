@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "axios": "^0.19",
+        "axios": "^0.19.2",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0.2",
         "jquery": "^3.2",
@@ -26,6 +26,8 @@
     "dependencies": {
         "@mapbox/mapbox-gl-geocoder": "^4.5.1",
         "@studiometa/vue-mapbox-gl": "^1.2.1",
-        "mapbox-gl": "^1.10.1"
+        "mapbox-gl": "^1.10.1",
+        "vue-axios": "^2.1.5",
+        "vue-router": "^3.3.4"
     }
 }
