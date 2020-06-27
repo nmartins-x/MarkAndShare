@@ -5,7 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use App\User;
 
-class ListingTest extends TestCase {
+class ListingAuthTest extends TestCase {
 
     use \Illuminate\Foundation\Testing\WithFaker;
 
@@ -76,8 +76,6 @@ class ListingTest extends TestCase {
         $response = $this->get(
                         route($this->base_route . '.index', $this->attributes)
                 )->assertSuccessful();
-        
-        $model = new $this->base_model;
 
         $this->assertEmpty($response->json());
     }
@@ -91,8 +89,6 @@ class ListingTest extends TestCase {
         $response = $this->get(
                         route($this->base_route . '.show', $this->attributes['unique_url'])
                 )->assertSuccessful();
-
-        $model = new $this->base_model;
 
         $this->assertEquals($response->json()['user_id'], $this->attributes['user_id']);
     }
@@ -109,8 +105,6 @@ class ListingTest extends TestCase {
         $response = $this->get(
                         route($this->base_route . '.show', $this->attributes['unique_url'])
                 )->assertSuccessful();
-
-        $model = new $this->base_model;
 
         $this->assertEquals($response->json()['user_id'], $attributes['user_id']);
     }
@@ -131,8 +125,6 @@ class ListingTest extends TestCase {
         $response = $this->get(
                         route($this->base_route . '.show', $this->attributes['unique_url'])
                 )->assertSuccessful();
-                
-        $model = new $this->base_model;
         
         $this->assertNotEmpty($response->json());
                 

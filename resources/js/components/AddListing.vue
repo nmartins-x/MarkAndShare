@@ -30,16 +30,17 @@
     export default {
         data() {
             return {
-                listing: {}
+                listing: {
+                    public_listed: true
+                }
             }
         },
         methods: {
             addListing() {
-
                 this.axios
                     .post('/listing', this.listing)
                     .then(response => (
-                        this.$router.push({name: 'home'})
+                        this.$router.push({name: 'userListings'})
                         // console.log(response.data)
                     ))
                     .catch(error => console.log(error))
