@@ -21,7 +21,6 @@ class DashboardTest extends TestCase
         $this
             ->get(route('home'))
             ->assertStatus(200)
-            ->assertSeeText('Dashboard')
-            ->assertSee('list-create');
+            ->assertSeeText('Dashboard');
     }
 }

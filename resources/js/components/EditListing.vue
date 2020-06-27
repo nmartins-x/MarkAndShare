@@ -44,7 +44,7 @@
         methods: {
             updateListing() {
                 this.axios
-                    .post(`/listing/update/${this.$route.params.id}`, this.listing)
+                    .put(`/listing/${this.$route.params.id}`, this.listing)
                     .then((response) => {
                         this.$router.push({name: 'home'});
                     });

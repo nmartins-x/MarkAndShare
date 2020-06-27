@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('listing/{unique_url}', 'ListingController@show')->name('listing.show');
 
-// This allows VueJS router to takeover the routing
-Route::get('/vue/{vue_capture?}', function () {
+// This allows VueJS router to takeover the routing, should be at the very end of these routes
+Route::get('/{vue_capture?}', function () {
  return view('home');
 })->where('vue_capture', '[\/\w\.-]*');

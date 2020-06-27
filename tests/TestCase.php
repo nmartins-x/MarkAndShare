@@ -74,7 +74,7 @@ abstract class TestCase extends BaseTestCase
             $this->expectException(\Illuminate\Auth\AuthenticationException::class);
         }
 
-        $response = $this->patchJson(route($route, $model->id), $model->toArray());
+        $response = $this->putJson(route($route, $model->id), $model->toArray());
 
         tap($model->fresh(), function ($model) use ($attributes) {
             collect($attributes)->each(function($value, $key) use ($model) {

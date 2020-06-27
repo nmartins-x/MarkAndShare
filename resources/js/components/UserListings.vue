@@ -36,9 +36,8 @@
             }
         },
         created() {
-            console.log(process.env.APP_URL);
             this.axios
-                .get('/listing')
+                .get('/listing/user_owned')
                 .then(response => {
                     this.listings = response.data;
                 });
@@ -49,7 +48,7 @@
                     .delete(`/listing/${id}`)
                     .then(response => {
                         let i = this.listings.map(item => item.id).indexOf(id); // find index of your object
-                        this.listings.splice(i, 1)
+                        this.listings.splice(i, 1);
                     });
             }
         }
