@@ -32,9 +32,14 @@ Route::middleware('auth')->group(function () {
     ])->name('*', 'listing');
     
     Route::get('/listing/user_owned/', 'ListingController@user_owned')->name('listing.user_owned');
+    
+    Route::resource('/marker', 'MarkerController', [
+        'except' => ['edit', 'show', 'index', 'create']
+    ])->name('*', 'marker');
 });
 
 Route::get('listing/{unique_url}', 'ListingController@show')->name('listing.show');
+Route::get('listing/{unique_url}/markers', 'ListingController@getMarkers')->name('listing.markers');
 
 // This allows VueJS router to takeover the routing, should be at the very end of these routes
 Route::get('/{vue_capture?}', function () {

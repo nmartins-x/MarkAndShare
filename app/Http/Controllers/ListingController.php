@@ -75,7 +75,7 @@ class ListingController {
         $user = Auth::User();
         
         // Validate that user owns the Listing
-        $user->listing()->findOrFail($request->id);
+        $user->listing()->findOrFail($listing->id);
 
         $listing->update(
             $request->only('name', 'description', 'public_listed')
@@ -97,6 +97,15 @@ class ListingController {
         $listing->delete();
         
         return response()->json(['result' => 'deleted']);
+    }
+    
+    public function getMarkers(string $unique_url)
+    {
+        $listing = Listing::where('unique_url', $unique_url)->first();
+
+        $response = $listing->markers;
+
+        return response(json_encode($response), 201);
     }
 
     /**

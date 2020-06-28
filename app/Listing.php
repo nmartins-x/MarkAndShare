@@ -15,7 +15,7 @@ class Listing extends Model
         return $this->belongsTo('App\User');
     }
     
-    public function marker()
+    public function markers()
     {
         return $this->hasMany('App\Marker');
     }

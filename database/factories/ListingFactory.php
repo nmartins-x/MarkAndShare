@@ -8,6 +8,6 @@ $factory->define(App\Listing::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->text,
-        'public_listed' => 1
+        'public_listed' => 1,
     ];
 });
