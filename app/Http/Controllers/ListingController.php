@@ -94,6 +94,8 @@ class ListingController {
         
         $user->listing()->findOrFail($listing->id);
         
+        // @todo remove all markers associated to the listing
+        
         $listing->delete();
         
         return response()->json(['result' => 'deleted']);

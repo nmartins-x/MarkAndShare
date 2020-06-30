@@ -9,9 +9,9 @@
                     <div class="card">
                         @if (auth()->guest())
                             Login/Register to start marking & sharing!
-                        @else
-                            @include('dashboard.main')
                         @endif
+                        
+                        @include('dashboard.main')
                     </div>
                 </div>
             </div>

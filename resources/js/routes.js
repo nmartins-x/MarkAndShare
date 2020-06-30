@@ -3,6 +3,7 @@ import UserListings from './components/UserListings.vue';
 import AddListing from './components/AddListing.vue';
 import EditListing from './components/EditListing.vue';
 import ViewListing from './components/ViewListing.vue';
+import EditMarker from './components/EditMarker.vue';
 
 export const routes = [
     {
@@ -17,7 +18,7 @@ export const routes = [
     },
     {
         name: 'edit',
-        path: '/edit/:id',
+        path: '/edit/:unique_url',
         component: EditListing
     },
     {
@@ -30,4 +31,10 @@ export const routes = [
         path: '/MyListings',
         component: UserListings
     },
+    {
+        name: 'editMarker',
+        path: '/marker/edit',
+        component: EditMarker
+    },
+    
 ];

@@ -38,7 +38,6 @@
                 .get(`/listing/${this.$route.params.unique_url}`)
                 .then((response) => {
                     this.listing = response.data;
-                    console.log(response.data);
                 });
         },
         methods: {

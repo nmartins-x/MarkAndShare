@@ -76,5 +76,10 @@
             @yield('content')
         </main>
     </div>
+    @if (Auth::check())
+        <script>window.registered=true</script>
+    @else
+        <script>window.registered=false</script>
+    @endif
 </body>
 </html>
