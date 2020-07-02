@@ -1,9 +1,10 @@
-import PublicListings from './components/PublicListings.vue';
-import UserListings from './components/UserListings.vue';
-import AddListing from './components/AddListing.vue';
-import EditListing from './components/EditListing.vue';
-import ViewListing from './components/ViewListing.vue';
-import EditMarker from './components/EditMarker.vue';
+import PublicListings from './components/listing/PublicListings.vue';
+import UserListings from './components/listing/UserListings.vue';
+import AddListing from './components/listing/AddListing.vue';
+import EditListing from './components/listing/EditListing.vue';
+import ViewListing from './components/listing/ViewListing.vue';
+import EditMarker from './components/marker/EditMarker.vue';
+import AddMarker from './components/marker/AddMarker.vue';
 
 export const routes = [
     {
@@ -12,17 +13,17 @@ export const routes = [
         component: PublicListings
     },
     {
-        name: 'add',
+        name: 'addListing',
         path: '/add',
         component: AddListing
     },
     {
-        name: 'edit',
+        name: 'editListing',
         path: '/edit/:unique_url',
         component: EditListing
     },
     {
-        name: 'view',
+        name: 'viewListing',
         path: '/l/:unique_url',
         component: ViewListing
     },
@@ -32,8 +33,13 @@ export const routes = [
         component: UserListings
     },
     {
+        name: 'addMarker',
+        path: '/l/:unique_url/addmarker',
+        component: AddMarker
+    },
+    {
         name: 'editMarker',
-        path: '/marker/edit',
+        path: '/l/:unique_url/editmarker',
         component: EditMarker
     },
     

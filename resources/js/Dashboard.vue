@@ -9,7 +9,7 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav">
                     <router-link :to="{name: 'home'}" class="nav-item nav-link">Home</router-link>
-                    <router-link :to="{name: 'add'}" class="nav-item nav-link">Add Listing</router-link>
+                    <router-link :to="{name: 'addListing'}" class="nav-item nav-link">Add Listing</router-link>
                     <router-link :to="{name: 'userListings'}" class="nav-item nav-link">My Listings</router-link>
                 </div>
             </div>

@@ -23,10 +23,15 @@
                 </form>
             </div>
         </div>
+        <router-link :to="{name: 'addMarker', params: { id: listing.id, unique_url: listing.unique_url }}" class="btn btn-primary">Add Marker
+        </router-link>
+        <view-markers></view-markers>
     </div>
 </template>
 
 <script>
+    import displayMarkers from '../marker/DisplayMarkers.vue';
+    
     export default {
         data() {
             return {
@@ -48,6 +53,9 @@
                         this.$router.push({name: 'home'});
                     });
             }
+        },
+        components: {
+            'view-markers': displayMarkers
         }
     }
 </script>

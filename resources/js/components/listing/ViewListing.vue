@@ -5,7 +5,7 @@
             <span class="text-center">{{ listing.description }}</span>
             <div>
                 <router-link v-if="$store.state.userAuthenticated" 
-                             :to="{name: 'edit', params: { id: listing.id, public_listed: listing.public_listed, unique_url: listing.unique_url }}" 
+                             :to="{name: 'editListing', params: { id: listing.id, public_listed: listing.public_listed, unique_url: listing.unique_url }}" 
                              class="btn btn-primary">Edit
                 </router-link>
             </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import displayMarkers from './DisplayMarkers.vue';
+    import displayMarkers from '../marker/DisplayMarkers.vue';
     
     export default {
         data() {
@@ -32,7 +32,8 @@
         },
         methods: {
             
-        },components: {
+        },
+        components: {
             'view-markers': displayMarkers
         }
     }

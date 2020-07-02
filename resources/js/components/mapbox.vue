@@ -58,7 +58,12 @@
                 this.markers[id].gpsCoords = [newCoords.lng, newCoords.lat];
                 
                 // centers the map on marker position
-                this.center = [newCoords.lng, newCoords.lat];
+                this.center = this.markers[id].gpsCoords;
+                
+                this.$store.commit('updateCoordinates', {
+                    lgt: newCoords.lng,
+                    lat: newCoords.lat
+                });
             },
         },
         
@@ -79,5 +84,6 @@
         destroyed() {
             window.removeEventListener("resize", this.resizeMap);
         },
+        
     };
 </script>

@@ -20,6 +20,7 @@ Vue.use(VueMapbox);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
+Vue.config.devtools = true;
 
 Vue.component('mapbox', require('./components/mapbox.vue').default);
 Vue.component('dashboard', require('./Dashboard.vue').default);
@@ -31,12 +32,19 @@ const router = new VueRouter({
 
 const store = new Vuex.Store({
   state: {
-    userAuthenticated: false
+    userAuthenticated: false,
+    markerCoordinates: {
+        lgt: null,
+        lat: null
+    },
   },
   mutations: {
     checkAndUpdate (state) {
       state.userAuthenticated = window.registered;
-    }
+    },
+    updateCoordinates (state, coordinates) {
+        Object.assign(state.markerCoordinates, coordinates);
+    },
   }
 });
 

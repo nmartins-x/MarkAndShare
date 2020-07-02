@@ -12,16 +12,12 @@
             </thead>
             <tbody>
             <tr v-for="listing in listings" :key="listing.id">
-                <td>{{ listing.name }}</td>
+                <td>
+                    <router-link :to="{ name: 'viewListing', params: { unique_url: listing.unique_url }}" class="nav-item nav-link">
+                        {{ listing.name }}
+                    </router-link></td>
                 <td>{{ listing.description }}</td>
                 <td>{{ listing.updated_at }}</td>
-                <td>
-                    <div class="btn-group" role="group">
-                        <router-link :to="{name: 'edit', params: { id: listing.id, public_listed: listing.public_listed, unique_url: listing.unique_url }}" class="btn btn-primary">Edit
-                        </router-link>
-                        <button class="btn btn-danger" @click="deleteListing(listing.id)">Delete</button>
-                    </div>
-                </td>
             </tr>
             </tbody>
         </table>
@@ -37,7 +33,7 @@
         },
         created() {
             this.axios
-                .get('/listing/user_owned')
+                .get('/listing')
                 .then(response => {
                     this.listings = response.data;
                 });
