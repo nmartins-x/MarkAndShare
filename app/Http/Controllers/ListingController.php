@@ -4,129 +4,77 @@ namespace App\Http\Controllers;
 
 use App\Listing;
 use Illuminate\Http\Request;
+use App\Http\Request\Listing\StoreListingRequest;
+use App\Http\Request\Listing\UpdateListingRequest;
+use App\Http\Request\Listing\DestroyListingRequest;
 use Illuminate\Http\Response;
+use App\Repositories\ListingRepository;
 use Auth;
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\Validator;
 
-class ListingController {    
-    public function index()
-    {
-        $listing = Listing::where('public_listed', 1);
-        
-        if ($user = Auth::User()) {
-            $listing = $listing->orWhere('user_id', $user->id);
-        }
-        
-        $response = $listing->get();
+class ListingController {
+    protected $repository;
   
-        return response($response, 201);
+    public function __construct(ListingRepository $repository)
+    {
+        $this->repository = $repository;
     }
     
-    public function user_owned()
-    {   
-        $user = Auth::User();
-                
-        $listings = $user->listing()->get();
+    public function index()
+    {
+        $listings = $this->repository->index(Auth::User());
   
         return response($listings, 201);
     }
     
+    public function user_owned()
+    {   
+        $listing = $this->repository->user_owned(Auth::User());
+        
+        return response($listing, 201);
+    }
+    
     public function show(string $unique_url)
     {
-        $listing = Listing::where('unique_url', $unique_url);
+        $listing = $this->repository->show($unique_url);
 
-        $response = $listing->first();
-
-        return response(json_encode($response), 201);
+        return response(json_encode($listing), 201);
     }
 
-    public function store(Request $request) {
-        request()->validate([
-            'name' => 'required|max:100',
-            'description' => 'required|max:1000',
-            'public_listed' => 'required|boolean'
-        ]);
-        
-        $user = Auth::User();
+    /**
+     * Store resource to database
+     * 
+     * @param StoreListingRequest $request
+     * @param ListingRepository $listingRepository
+     * @return Response
+     */
+    public function store(StoreListingRequest $request): Response
+    {           
+        $listing = $this->repository->create($request, Auth::User());
 
-        // Generate an unique random string of 6 characters
-        do {
-            $unique_url = $this->randomStringGenerator(6);
-
-            $url_exists = Listing::where('unique_url', $unique_url)->exists();
-        } while ($url_exists);
-
-        $request->merge([
-            'user_id' => $user->id,
-            'unique_url' => $unique_url
-        ]);
-
-        $response = Listing::create($request->all());
-
-        return response($response, 201);
+        return response($listing, 201);
     }
 
-    public function update(Request $request, Listing $listing) {
-        request()->validate([
-            'id' => 'required:numeric',
-        ]);
-        
-        $user = Auth::User();
-        
-        // Validate that user owns the Listing
-        $user->listing()->findOrFail($listing->id);
-
-        $listing->update(
-            $request->only('name', 'description', 'public_listed')
-        );
+    public function update(int $id, UpdateListingRequest $request)
+    {
+        $listing = $this->repository->update($id, $request);
 
         return response()->json($listing);
     }
     
-    public function destroy(Listing $listing)
-    {
-        if(!$listing->id) {
-            return response('Error: id is required', 400);
-        }
-        
-        $user = Auth::User();
-        
-        $user->listing()->findOrFail($listing->id);
-        
-        // @todo remove all markers associated to the listing
-        
-        $listing->delete();
+    public function destroy($id, DestroyListingRequest $request)
+    {        
+        $destroy = $this->repository->destroy($id);
         
         return response()->json(['result' => 'deleted']);
     }
     
     public function getMarkers(string $unique_url)
     {
-        $listing = Listing::where('unique_url', $unique_url)->first();
+        $markers = $this->repository->getMarkers($unique_url);
 
-        $response = $listing->markers;
-
-        return response(json_encode($response), 201);
-    }
-
-    /**
-     * Generates a random string of letters
-     * 
-     * @param int $len
-     * @return string
-     */
-    protected function randomStringGenerator(int $len): string {
-        $base = 'ABCDEFGHKLMNOPQRSTWXYZabcdefghjkmnpqrstwxyz';
-        $max = strlen($base) - 1;
-        $activatecode = '';
-
-        mt_srand((double) microtime() * 1000000);
-
-        while (strlen($activatecode) < $len)
-            $activatecode .= $base{mt_rand(0, $max)};
-
-        return $activatecode;
+        return response(json_encode($markers), 201);
     }
 
 }
