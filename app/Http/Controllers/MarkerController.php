@@ -7,71 +7,78 @@ use App\Marker;
 use App\Listing;
 use Illuminate\Http\Response;
 use Auth;
+use App\Http\Request\Marker\StoreMarkerRequest;
+use App\Http\Request\Marker\UpdateMarkerRequest;
+use App\Http\Request\Marker\DestroyMarkerRequest;
+use App\Repositories\MarkerRepository;
 
 class MarkerController extends Controller
 {
-    public function store(Request $request) {      
-        request()->validate([
-            'name' => 'required|max:100',
-            'description' => 'max:1000',
-            'lgt' => 'required',
-            'lat' => 'required',
-        ]);
-        
+    /** @var type */
+    protected $repository;
+  
+    /**
+     * @param MarkerRepository $repository
+     */
+    public function __construct(MarkerRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+    
+     /**
+     * Store resource to database
+     * 
+     * @param StoreMarkerRequest $request
+     * @return Response
+     */
+    public function store(StoreMarkerRequest $request): Response {
+        // Listing that will be associated to the marker
         $listing = Listing::where('id', $request->listing_id)->first();
-         
-        $user = Auth::User();
+            
+        $marker = $this->repository->create($request, Auth::User(), $listing);
 
-        $request->merge([
-            'user_id' => $user->id,
-            'listing_id' => $listing->id,
-            'is_approved' => ($listing->user_id == $user->id ? 1 : 0),
-        ]);
-
-        $response = Marker::create($request->all());
-
-        return response($response, 201);
+        return response($marker, 201);
     }
 
-    public function update(Request $request, Marker $marker) {
-        request()->validate([
-            'id' => 'required:numeric',
-        ]);
+     /**
+     * Updates a marker
+     * 
+     * @param int $id
+     * @param UpdateMarkerRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(int $id, UpdateMarkerRequest $request): \Illuminate\Http\JsonResponse
+    {        
+        $marker = $this->repository->show($id);
         
-        $marker = Marker::findOrFail($marker->id);
+        // validates and mutates $request->is_approved
+        $user_approved = $request->userIsApproved(Auth::User(), $marker);
         
-        $user = Auth::User();
-        
-        // Validate that user owns the Listing or owns the Marker        
-        if($user->listing()->find($marker->listing_id)){
-            // do nothing
-        } else if($marker->user_id == $user->id){
-            // keep the state on the DB
-            // only owners of a Listing can modify approve status
-            $request->is_approved = $marker->is_approved;
-        } else {
+        if (!$user_approved) {
             return response([], 401);
         }
-
-        $marker->update(
-            $request->only('name', 'description', 'is_approved', 'lgt', 'lat')
-        );
+        
+        $marker = $this->repository->update($id, $request);
 
         return response()->json($marker);
     }
-    
-    public function destroy(Marker $marker)
+        
+    /**
+     * Destroys one marker
+     * 
+     * @param type $id
+     * @param DestroyMarkerRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(Marker $marker, DestroyMarkerRequest $request): \Illuminate\Http\JsonResponse
     {
-        if(!$marker->id) {
-            return response('Error: id is required', 400);
-        } else if(!$marker->listing_id){
-            return response('Error: listing_id is required', 400);
+        $validation_error = $request->validateRequired($marker, Auth::User());
+        
+        if (! empty($validation_error)) {
+            return response()->json($validation_error, 400);
         }
         
-        $user = Auth::User();       
-        $user->listing()->findOrFail($marker->listing_id);
-        
-        $marker->delete();
+        $destroy = $this->repository->destroy($marker->id);
         
         return response()->json(['result' => 'deleted']);
     }
