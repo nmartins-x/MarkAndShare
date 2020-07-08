@@ -4,11 +4,15 @@ namespace App\Repositories;
 
 use App\Listing;
 use App\User;
-use Illuminate\Database\Eloquent\Model;
+use \Illuminate\Support\Collection;
 
 Class ListingRepository {
+    /** @var type */
     protected $model;
     
+    /** 
+     * @param Listing $model
+     */
     public function __construct(Listing $model)
     {         
         $this->model = $model;
@@ -19,7 +23,7 @@ Class ListingRepository {
      * 
      * @return Collection of items.
      */
-    public function index(User $user)
+    public function index(User $user): Collection
     {
         $listing = $this->model::where('public_listed', 1);
         
@@ -32,7 +36,7 @@ Class ListingRepository {
         return $items;
     }
     
-    public function user_owned(User $user)
+    public function user_owned(User $user): Collection
     {     
         return $user->listing()->get();
     }
@@ -40,7 +44,7 @@ Class ListingRepository {
      /**
      * Retrieve a specific item
      */
-    public function show(string $unique_url)
+    public function show(string $unique_url): Listing
     {
         $listing = $this->model::where('unique_url', $unique_url);
 
@@ -57,10 +61,11 @@ Class ListingRepository {
      * 
      * @return Listing
      */
-    public function create(object $listingData, User $user): Listing {
+    public function create(object $listingData, User $user): Listing
+    {
         // Generate an unique random string of 6 characters
         do {
-            $unique_url = $this->randomStringGenerator(6);
+            $unique_url = self::randomStringGenerator(6);
 
             $url_exists = Listing::where('unique_url', $unique_url)->exists();
         } while ($url_exists);
@@ -94,7 +99,7 @@ Class ListingRepository {
         return $item;
     }
     
-    public function destroy(int $id)
+    public function destroy(int $id): bool
     {         
         $this->model->destroy($id);
         
@@ -106,7 +111,7 @@ Class ListingRepository {
     /**
     * Retrieve markers associated to a listing
     */
-    public function getMarkers(string $unique_url)
+    public function getMarkers(string $unique_url): Collection
     {
         $listing = $this->model::where('unique_url', $unique_url)->first();
 
@@ -121,15 +126,17 @@ Class ListingRepository {
      * @param int $len
      * @return string
      */
-    protected function randomStringGenerator(int $len): string {
+    protected static function randomStringGenerator(int $len): string
+    {
         $base = 'ABCDEFGHKLMNOPQRSTWXYZabcdefghjkmnpqrstwxyz';
         $max = strlen($base) - 1;
         $activatecode = '';
 
         mt_srand((double) microtime() * 1000000);
 
-        while (strlen($activatecode) < $len)
+        while (strlen($activatecode) < $len) {
             $activatecode .= $base{mt_rand(0, $max)};
+        }
 
         return $activatecode;
     }
