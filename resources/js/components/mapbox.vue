@@ -62,7 +62,8 @@
                 
                 this.$store.commit('updateCoordinates', {
                     lgt: newCoords.lng,
-                    lat: newCoords.lat
+                    lat: newCoords.lat,
+                    id: id
                 });
             },
         },

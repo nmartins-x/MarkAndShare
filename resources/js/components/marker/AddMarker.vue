@@ -21,6 +21,7 @@
                 </form>
             </div>
         </div>
+        <errors-list :errors="errors"></errors-list>
     </div>
 </template>
 
@@ -31,8 +32,9 @@
                 marker: {
                     lgt: null,
                     lat: null,
+                    listing_id: undefined
                 },
-                coordinates: this.$store.state.markerCoordinates
+                errors: {lat: ['teste']}
             }
         },
         
@@ -56,10 +58,28 @@
                                     this.$router.push({name: 'userMarker'})
                                     // console.log(response.data)
                                     ))
-                        .catch(error => console.log(error))
+                        .catch(error => {
+                            this.errors = error.response.data.errors;
+                        })
                         .finally(() => this.loading = false)
             }
         },
-
-    }
+        
+        computed: {
+          markerState() {
+            this.marker.lgt = this.$store.state.editedMarker.lgt;
+            this.marker.lat = this.$store.state.editedMarker.lat;
+          }
+        },
+        
+        watch: {
+          markerState() {
+              // nothing to do, just watch this function on 'computed'
+          }
+        },
+        
+        components: {
+            'errors-list': require('../utils/Errors.vue').default,
+        },
+    };
 </script>

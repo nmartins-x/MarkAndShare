@@ -33,17 +33,19 @@ const router = new VueRouter({
 const store = new Vuex.Store({
   state: {
     userAuthenticated: false,
-    markerCoordinates: {
+    editedMarker: {
         lgt: null,
-        lat: null
+        lat: null,
+        id: null
     },
   },
   mutations: {
     checkAndUpdate (state) {
       state.userAuthenticated = window.registered;
     },
+    // coordinates when marker position is updated/moved
     updateCoordinates (state, coordinates) {
-        Object.assign(state.markerCoordinates, coordinates);
+        Object.assign(state.editedMarker, coordinates);
     },
   }
 });
