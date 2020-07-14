@@ -34,7 +34,7 @@
                     lat: null,
                     listing_id: undefined
                 },
-                errors: {lat: ['teste']}
+                errors: {}
             }
         },
         

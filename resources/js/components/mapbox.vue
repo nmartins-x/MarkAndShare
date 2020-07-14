@@ -61,8 +61,8 @@
                 this.center = this.markers[id].gpsCoords;
                 
                 this.$store.commit('updateCoordinates', {
-                    lgt: newCoords.lng,
-                    lat: newCoords.lat,
+                    lgt: (newCoords.lng).toFixed(8),
+                    lat: (newCoords.lat).toFixed(8),
                     id: id
                 });
             },

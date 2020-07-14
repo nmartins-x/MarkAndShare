@@ -2,7 +2,7 @@
     <div>
         <h3 class="text-center">Public Listings</h3><br/>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered" v-if="listings.length">
             <thead>
             <tr>
                 <th>Name</th>

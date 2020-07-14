@@ -1,5 +1,6 @@
 <template>
     <div class="alert alert-danger" v-if="computedErrors && computedErrors.length">
+        Error:
         <ul>
             <li v-for="error in computedErrors">{{ error }}</li>
         </ul>
