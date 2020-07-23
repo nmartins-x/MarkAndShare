@@ -41,13 +41,15 @@
         created() {
             this.marker.listing_id = this.$route.params.id;
 
-            if (this.marker.listing_id == undefined) {
+            if (this.marker.listing_id === undefined) {
                 this.axios
                         .get(`/listing/${this.$route.params.unique_url}`)
                         .then((response) => {
                             this.marker.listing_id = response.data.id;
                         });
             }
+            
+            this.$store.commit('setMarkerAsDraggable', true);
         },
         
         methods: {

@@ -39,7 +39,7 @@ export const routes = [
     },
     {
         name: 'editMarker',
-        path: '/l/:unique_url/editmarker',
+        path: '/l/:unique_url/editmarker/:id',
         component: EditMarker
     },
     

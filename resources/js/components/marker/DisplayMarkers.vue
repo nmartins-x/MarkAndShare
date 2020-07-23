@@ -14,7 +14,7 @@
                     {{ marker.name }}
                 <td>{{ marker.description }}</td>
                 <td>
-                    <router-link v-if="$store.state.userAuthenticated" :to="{name: 'editMarker', params: { id: marker.id, name: marker.name, description: marker.description }}" class="btn btn-primary">Edit
+                    <router-link v-if="$store.state.userAuthenticated" :to="{name: 'editMarker', params: { id: marker.id, name: marker.name, description: marker.description, listing_id: marker.listing_id }}" class="btn btn-primary">Edit
                     </router-link>
                 </td>
             </tr>

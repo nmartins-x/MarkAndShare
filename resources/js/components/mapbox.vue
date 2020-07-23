@@ -6,7 +6,7 @@
         :center="center"
         :zoom="1" 
         @mb-created="(mapboxInstance) => map = mapboxInstance">
-        <mapbox-marker v-for="(marker, index) in markers" :key="marker.id" :lng-lat="marker.gpsCoords" :gpsCoords="marker.gpsCoords" popup :draggable="true" @mb-dragend="updateGpsCoordinates(index, $event)">
+        <mapbox-marker v-for="(marker, index) in markers" :key="marker.id" :lng-lat="marker.gpsCoords" :gpsCoords="marker.gpsCoords" popup :draggable="marker.draggable" @mb-dragend="updateGpsCoordinates(index, $event)">
           <template v-slot:popup>
             <p>Hello world!</p>
           </template>
@@ -22,11 +22,8 @@
                     {
                       id: 1,
                       gpsCoords: [0,0],
-                    },
-                    { 
-                      id: 2,
-                      gpsCoords: [1,1],
-                    },
+                      draggable: false
+                    }
                 ],
                 map: null,
                 height: '800px',
@@ -41,7 +38,9 @@
                 // nav bar height
                 let element = document.querySelector('nav');
                 let elementH = getComputedStyle(element).height;
-                let navHeight = elementH.replace(/\D/g, "");
+                
+                // remove everything after dot and/or any non numeric characters
+                let navHeight = elementH.split('.')[0].replace(/\D/g, "");
                 
                 // window height
                 let wH = window.innerHeight;
@@ -71,6 +70,27 @@
         computed: {
             computedHeight: function () {
                return this.height;
+            },
+            
+            markerDraggableStatus() {
+                this.markers[0].draggable = this.$store.state.editedMarker.draggable;
+          }
+        },
+                
+        watch: {
+            // control when to set a marker as draggable
+            $route (to, from){
+                let drag_value = false;
+                
+                if (['addMarker', 'editMarker'].indexOf(to.name) >= 0){
+                    drag_value = true;
+                }
+                
+                this.$store.commit('setMarkerAsDraggable', drag_value);
+            },
+    
+            markerDraggableStatus() {
+                // nothing to do, just watch this function on 'computed'
             },
         },
         

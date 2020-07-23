@@ -36,16 +36,23 @@ const store = new Vuex.Store({
     editedMarker: {
         lgt: null,
         lat: null,
-        id: null
+        id: null,
+        draggable: false,
     },
   },
+  
   mutations: {
     checkAndUpdate (state) {
       state.userAuthenticated = window.registered;
     },
+    
     // coordinates when marker position is updated/moved
     updateCoordinates (state, coordinates) {
         Object.assign(state.editedMarker, coordinates);
+    },
+    
+    setMarkerAsDraggable (state, value) {
+        state.editedMarker.draggable = value;
     },
   }
 });
