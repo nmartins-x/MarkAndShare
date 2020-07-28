@@ -58,12 +58,17 @@
                         for (let marker of response.data) {
                             if (marker.id === marker_id) {
                                 this.marker = marker;
+                                
+                                this.$store.commit('updateCoordinates', {
+                                    lgt: (marker.lgt),
+                                    lat: (marker.lat)
+                                });
+                                                            
+                                this.$store.commit('setMarkerAsDraggable', true);
                             }
                         }
                     });
             }
-                            
-            this.$store.commit('setMarkerAsDraggable', true);
         },
         
         methods: {

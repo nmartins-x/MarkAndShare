@@ -33,17 +33,24 @@ const router = new VueRouter({
 const store = new Vuex.Store({
   state: {
     userAuthenticated: false,
-    editedMarker: {
-        lgt: null,
-        lat: null,
-        id: null,
-        draggable: false,
+        visibleMarkers: [], // share visible markers between mapbox component and other components
+        editedMarker: { // share edited marker between mapbox component and other components
+            lgt: null,
+            lat: null,
+            id: null,
+            draggable: false,
+        },
     },
-  },
   
   mutations: {
-    checkAndUpdate (state) {
+    // updates the app user authentication state
+    checkAuthAndUpdate (state) {
       state.userAuthenticated = window.registered;
+    },
+    
+    // update visible markers
+    updateMarkers (state, markers) {
+        state.visibleMarkers = [...markers];
     },
     
     // coordinates when marker position is updated/moved
@@ -51,6 +58,7 @@ const store = new Vuex.Store({
         Object.assign(state.editedMarker, coordinates);
     },
     
+    // modify the draggable state of an edited marker
     setMarkerAsDraggable (state, value) {
         state.editedMarker.draggable = value;
     },

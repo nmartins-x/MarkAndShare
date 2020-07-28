@@ -27,14 +27,16 @@
     export default {
         data() {
             return {
-                markers: {}
+                markers: []
             }
         },
         created() {
             this.axios
                 .get(`/listing/${this.$route.params.unique_url}/markers`)
                 .then((response) => {
-                    this.markers = response.data;
+                    this.markers = [...response.data];
+            
+                    this.$store.commit('updateMarkers', this.markers);
                 });
         },
         methods: {

@@ -22,7 +22,7 @@
 <script>
     export default {
         created() {
-            this.$store.commit('checkAndUpdate');
+            this.$store.commit('checkAuthAndUpdate');
         }
     }
 </script>
