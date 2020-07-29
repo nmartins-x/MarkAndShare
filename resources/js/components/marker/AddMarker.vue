@@ -30,8 +30,9 @@
         data() {
             return {
                 marker: {
-                    lgt: null,
-                    lat: null,
+                    lgt: 1,
+                    lat: 1,
+                    draggable: true,
                     listing_id: undefined
                 },
                 errors: {}
@@ -49,6 +50,17 @@
                         });
             }
             
+            // create temporary visible marker
+            this.$store.commit('updateMarkers', [
+                this.marker
+            ]);
+            
+            // Update marker position on the map
+            this.$store.commit('updateEditedMarkerCoordinates', {
+                                    lgt: (this.marker.lgt),
+                                    lat: (this.marker.lat)
+                                });
+            
             this.$store.commit('setMarkerAsDraggable', true);
         },
         
@@ -57,7 +69,7 @@
                 this.axios
                         .post('/marker', this.marker)
                         .then(response => (
-                                    this.$router.push({name: 'userMarker'})
+                                    this.$router.push({name: 'editListing'})
                                     // console.log(response.data)
                                     ))
                         .catch(error => {
@@ -69,6 +81,8 @@
         
         computed: {
           markerState() {
+            if (this.marker.listing_id === undefined) return;
+            
             this.marker.lgt = this.$store.state.editedMarker.lgt;
             this.marker.lat = this.$store.state.editedMarker.lat;
           }

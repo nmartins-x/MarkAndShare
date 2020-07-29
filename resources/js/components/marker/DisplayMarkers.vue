@@ -40,7 +40,6 @@
                 });
         },
         methods: {
-            
         }
     }
 </script>

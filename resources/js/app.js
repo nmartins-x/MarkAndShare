@@ -54,7 +54,7 @@ const store = new Vuex.Store({
     },
     
     // coordinates when marker position is updated/moved
-    updateCoordinates (state, coordinates) {
+    updateEditedMarkerCoordinates (state, coordinates) {
         Object.assign(state.editedMarker, coordinates);
     },
     

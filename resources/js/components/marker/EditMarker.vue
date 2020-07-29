@@ -19,6 +19,7 @@
                     
                     <button type="submit" class="btn btn-primary">Update Marker</button>
                 </form>
+                <button class="btn btn-danger" @click="deleteMarker()">Delete</button>
             </div>
         </div>
         <errors-list :errors="errors"></errors-list>
@@ -59,7 +60,7 @@
                             if (marker.id === marker_id) {
                                 this.marker = marker;
                                 
-                                this.$store.commit('updateCoordinates', {
+                                this.$store.commit('updateEditedMarkerCoordinates', {
                                     lgt: (marker.lgt),
                                     lat: (marker.lat)
                                 });
@@ -76,7 +77,15 @@
                 this.axios
                     .put(`/marker/${this.$route.params.id}`, this.marker)
                     .then((response) => {
-                        this.$router.push({name: 'home'});
+                        this.$router.push({name: 'editListing'});
+                    });
+            },
+            
+            deleteMarker() {
+                this.axios
+                    .delete(`/marker/${this.marker.id}`)
+                    .then(response => {
+                        this.$router.push({name: 'editListing'});
                     });
             }
         },

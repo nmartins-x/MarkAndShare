@@ -8,7 +8,8 @@
         @mb-created="(mapboxInstance) => map = mapboxInstance">
         <mapbox-marker v-for="(marker, index) in markers" :key="marker.id" :lng-lat="marker.gpsCoords" :gpsCoords="marker.gpsCoords" popup :draggable="marker.draggable" @mb-dragend="updateGpsCoordinates(index, $event)">
             <template v-slot:popup>
-                <p>Hello world!</p>
+                <p class="marker-name">{{ marker.name }}</p>
+                <p>{{ marker.description }}</p>
             </template>
         </mapbox-marker>
     </mapbox-map>
@@ -53,7 +54,7 @@
                 // centers the map on marker position
                 this.center = this.markers[id].gpsCoords;
 
-                this.$store.commit('updateCoordinates', {
+                this.$store.commit('updateEditedMarkerCoordinates', {
                     lgt: (newCoords.lng).toFixed(8),
                     lat: (newCoords.lat).toFixed(8),
                     id: id
@@ -74,8 +75,10 @@
                 {
                     tempArray.push({
                         id: marker.id,
+                        name: marker.name,
+                        description: marker.description,
                         gpsCoords: [marker.lgt, marker.lat],
-                        draggable: false
+                        draggable: marker.draggable === undefined ? false : marker.draggable, 
                     });
                 }
 
@@ -87,14 +90,17 @@
             // control when to set a marker as draggable
             $route(to, from) {
                 // allow draggable marker on specific pages only
-                var can_enable_drag = ['addMarker', 'editMarker'].indexOf(to.name) >= 0;
-
+                var edit_marker = ['editMarker'].indexOf(to.name) >= 0;
+                var add_marker = ['addMarker'].indexOf(to.name) >= 0;
+                
                 this.markers.forEach((item, index) => {
-                    if (can_enable_drag && item.id === to.params.id) {
+                    if (edit_marker && item.id === to.params.id) {
                         item.draggable = true;
 
                         // centers the map on edited marker position
                         this.center = item.gpsCoords;
+                    } else if(add_marker){
+                        this.center = [1,1];
                     } else {
                         item.draggable = false;
                     }
