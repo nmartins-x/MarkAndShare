@@ -3,7 +3,7 @@
 
 A map platform allowing anyone to share or collaborate in lists of position markers(pins). Powered by Laravel 7, Vue.js and Mapbox.
 
-![GitHub Logo](/docs/images/screenshot.png)
+![Screenshot](/docs/screenshot.png)
 
 ## Installation
 
