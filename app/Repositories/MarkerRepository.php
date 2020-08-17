@@ -23,10 +23,8 @@ Class MarkerRepository {
     public function show(string $id): Marker
     {
         $marker = $this->model::find($id);
-
-        $item = $marker->first();
         
-        return $item;
+        return $marker;
     }
     
     /**

@@ -27,6 +27,8 @@ Route::get('/auth/redirect/{provider}', 'SocialController@redirect');
 Route::get('/callback/{provider}', 'SocialController@callback')->name('SocialiteCallback');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/user', 'SocialController@user');
+    
     Route::resource('/listing', 'ListingController', [
         'except' => ['edit', 'show']
     ])->name('*', 'listing');

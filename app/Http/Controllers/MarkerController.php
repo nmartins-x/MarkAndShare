@@ -55,7 +55,7 @@ class MarkerController extends Controller
         $user_approved = $request->userIsApproved(Auth::User(), $marker);
         
         if (!$user_approved) {
-            return response([], 401);
+            return response()->json([], 401);
         }
         
         $marker = $this->repository->update($id, $request);

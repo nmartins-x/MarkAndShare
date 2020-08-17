@@ -11,12 +11,10 @@
             <tbody>
             <tr v-for="marker in markers" :key="marker.id">
                 <td>
+                    <router-link :to="{name: 'editMarker', params: { id: marker.id, name: marker.name, description: marker.description, listing_id: marker.listing_id }}" class="nav-item nav-link">
                     {{ marker.name }}
-                <td>{{ marker.description }}</td>
-                <td>
-                    <router-link v-if="$store.state.userAuthenticated" :to="{name: 'editMarker', params: { id: marker.id, name: marker.name, description: marker.description, listing_id: marker.listing_id }}" class="btn btn-primary">Edit
                     </router-link>
-                </td>
+                <td>{{ marker.description }}</td>
             </tr>
             </tbody>
         </table>

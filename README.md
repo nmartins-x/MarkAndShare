@@ -1,9 +1,9 @@
 
 # Mark & Share
 
-A map platform allowing anyone to share or collaborate in lists of position markers. Powered by Laravel 7, Vue.js and Mapbox.
+A map platform allowing anyone to share or collaborate in lists of position markers(pins). Powered by Laravel 7, Vue.js and Mapbox.
 
-(Work in progress!)
+![GitHub Logo](/docs/images/screenshot.png)
 
 ## Installation
 
@@ -27,7 +27,7 @@ cp .env.example .env
 ```
 Next, create a free account on [https://www.mapbox.com/](https://www.mapbox.com/) to create an access token that will need to be added to the .env file. You can also add a Twitter API key and can configure the rest of the configuration variables (e,g. DB).
 
-To wrap things off, run:
+To wrap things up, run:
 ```bash
 php artisan key:generate
 php artisan migrate

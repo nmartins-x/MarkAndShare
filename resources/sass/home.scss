@@ -17,5 +17,13 @@ main {
         flex: 1;
         height: 100%;
     }
-}
 
+    /* boostrap stuff */
+    *, *::before, *::after {
+        box-sizing: initial;
+    }
+
+    .listing-description {
+        padding-bottom: 30px;
+    }
+}

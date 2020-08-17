@@ -25,7 +25,7 @@ class SocialController extends Controller
         return redirect()->to('/home');
     }
     
-    function createUser($getInfo,$provider)
+    function createUser($getInfo, $provider)
     {
         $user = User::where('provider_id', $getInfo->id)->first();
 
@@ -39,5 +39,15 @@ class SocialController extends Controller
         }
 
         return $user;
+    }
+    
+    /**
+     * Returns current authenticated user data
+     * 
+     * @return type
+     */
+    function user()
+    {
+        return response()->json([ "id" => auth()->id() ]);
     }
 }

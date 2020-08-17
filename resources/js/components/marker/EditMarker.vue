@@ -17,9 +17,9 @@
 
                     <span>Latitude: {{ marker.lat }}</span>
                     
-                    <button type="submit" class="btn btn-primary">Update Marker</button>
+                    <button type="submit" v-if="$store.state.userId == marker.user_id" class="btn btn-primary">Update Marker</button>
                 </form>
-                <button class="btn btn-danger" @click="deleteMarker()">Delete</button>
+                <button v-if="$store.state.userId == marker.user_id" class="btn btn-danger" @click="deleteMarker()">Delete</button>
             </div>
         </div>
         <errors-list :errors="errors"></errors-list>

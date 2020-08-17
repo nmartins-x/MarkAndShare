@@ -7,7 +7,6 @@
             <tr>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Updated At</th>
             </tr>
             </thead>
             <tbody>
@@ -17,7 +16,6 @@
                         {{ listing.name }}
                     </router-link></td>
                 <td>{{ listing.description }}</td>
-                <td>{{ listing.updated_at }}</td>
             </tr>
             </tbody>
         </table>

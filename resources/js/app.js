@@ -15,11 +15,13 @@ import VueMapbox from '@studiometa/vue-mapbox-gl';
 import axios from 'axios';
 import {routes} from './routes';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import VueSocialSharing from 'vue-social-sharing';
 
 Vue.use(VueMapbox);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
+Vue.use(VueSocialSharing);
 Vue.config.devtools = true;
 
 Vue.component('mapbox', require('./components/mapbox.vue').default);
@@ -33,6 +35,7 @@ const router = new VueRouter({
 const store = new Vuex.Store({
   state: {
     userAuthenticated: false,
+    userId: null,
         visibleMarkers: [], // share visible markers between mapbox component and other components
         editedMarker: { // share edited marker between mapbox component and other components
             lgt: null,
@@ -46,6 +49,17 @@ const store = new Vuex.Store({
     // updates the app user authentication state
     checkAuthAndUpdate (state) {
       state.userAuthenticated = window.registered;
+    },
+    
+    // updates the app user authentication state
+    checkUserId (state) {
+        if(state.userId === null) {
+          axios
+          .get('/user')
+          .then(response => {
+              state.userId = response.data.id;
+          });
+        }
     },
     
     // update visible markers
